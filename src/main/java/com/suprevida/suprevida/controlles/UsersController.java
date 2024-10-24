@@ -21,13 +21,11 @@ public class UsersController extends BaseController {
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody UserInput userInput){
-
-
         var outputRegisterUseCase =registerUseCase.execute(userInput);
         if(outputRegisterUseCase){
             return ResponseJson.json(response, HttpStatus.CREATED);
         }
-        return ResponseJson.json(response, HttpStatus.NOT_MODIFIED);
+        return ResponseJson.json(response, HttpStatus.BAD_REQUEST);
     }
 
 

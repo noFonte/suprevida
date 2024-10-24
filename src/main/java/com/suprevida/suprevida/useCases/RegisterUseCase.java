@@ -13,8 +13,11 @@ public class RegisterUseCase {
 
 
     public boolean execute(UserInput userInput) {
-        var outputData =  userRepository.save(new UserEntity(userInput.login(),userInput.password()));
-        if(outputData.getId() !=null) return true;
+        UserEntity userData = userRepository.findByLogin(userInput.login());
+        if(userData==null){
+            var outputData =  userRepository.save(new UserEntity(userInput.login(),userInput.password()));
+            if(outputData.getId() !=null) return true;
+        }
         return false;
     }
 }
