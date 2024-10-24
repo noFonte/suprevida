@@ -1,6 +1,6 @@
 const { default: axios } = require("axios");
 const MyFn = require("./Helpers.js")
-axios.defaults.baseURL ="http://localhost:8080";
+const url ="http://localhost:8080";
 
 
 test('criar um novo usuário',async () => {
@@ -9,6 +9,18 @@ test('criar um novo usuário',async () => {
         "login":MyFn.uuid(),
         "password":MyFn.uuid()
     }
-    outputUser = await axios.post("/register",inputUser)
-    expect(outputUser.code).toBe(201)
-  });
+    outputUser = await axios.post(url+"/register",inputUser)
+    expect(outputUser.status).toBe(201)
+});
+
+
+
+test('criar um novo usuário se o login não existir',async () => {
+
+    inputUser={
+        "login":MyFn.uuid(),
+        "password":MyFn.uuid()
+    }
+    outputUser = await axios.post(url+"/register",inputUser)
+    expect(outputUser.status).toBe(201)
+});
