@@ -14,20 +14,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Optional;
+
 
 @RestController
 public class UsersController extends BaseController {
-
     @Autowired
     private RegisterUseCase registerUseCase;
     @Autowired
     private GetAllUsersUseCase getAllUsersUseCase;
-
-
     @Autowired
     private UserByLoginUseCase userByLoginUseCase;
-
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(@RequestBody UserInput userInput){
         var outputRegisterUseCase =registerUseCase.execute(userInput);
@@ -36,7 +32,6 @@ public class UsersController extends BaseController {
         }
         return ResponseJson.json(response, HttpStatus.BAD_REQUEST);
     }
-
     @GetMapping("/users")
     public ResponseEntity<Map<String, Object>> users(){
         Iterable<UserEntity> outputGetAllUsersUseCase = getAllUsersUseCase.execute();
@@ -46,8 +41,6 @@ public class UsersController extends BaseController {
     @PostMapping("/user")
     public ResponseEntity<Map<String, Object>> user(@RequestBody  UserInput userInput){
         UserEntity outputUser = userByLoginUseCase.execute(userInput.login());
-
-
         response.put("user", outputUser);
         return ResponseJson.json(response, HttpStatus.OK);
     }

@@ -7,11 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GetAllUsersUseCase {
-
     @Autowired
     private UserRepository userRepository;
-
-
     public Iterable<UserEntity> execute() {
         return  userRepository.findAll();
     }

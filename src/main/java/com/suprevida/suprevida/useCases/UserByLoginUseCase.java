@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 public class UserByLoginUseCase {
     @Autowired
     private UserRepository userRepository;
-
-
     public UserEntity execute(String login){
         return userRepository.findByLogin(login);
     }

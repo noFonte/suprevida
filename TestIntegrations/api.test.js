@@ -52,3 +52,17 @@ test('Busca um Usuario Cadastrado Na Base', async () => {
     outputUser = await instance.post(url + "/user",inputUser)
    expect(outputUser.data.user.id).toBeGreaterThan(0);
 });
+
+
+
+
+
+test('criar um novo Produto', async () => {
+
+    inputUser = {
+        "login": MyFn.uuid(),
+        "password": MyFn.uuid()
+    }
+    outputUser = await instance.post(url + "/register", inputUser)
+    expect(outputUser.status).toBe(201)
+});
