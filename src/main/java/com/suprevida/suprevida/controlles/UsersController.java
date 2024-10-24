@@ -7,15 +7,14 @@ import com.suprevida.suprevida.inputs.UserInput;
 import com.suprevida.suprevida.useCases.RegisterUseCase;
 import com.suprevida.suprevida.useCases.GetAllUsersUseCase;
 
+import com.suprevida.suprevida.useCases.UserByLoginUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class UsersController extends BaseController {
@@ -25,6 +24,9 @@ public class UsersController extends BaseController {
     @Autowired
     private GetAllUsersUseCase getAllUsersUseCase;
 
+
+    @Autowired
+    private UserByLoginUseCase userByLoginUseCase;
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(@RequestBody UserInput userInput){
@@ -41,8 +43,14 @@ public class UsersController extends BaseController {
         response.put("users", outputGetAllUsersUseCase);
         return ResponseJson.json(response, HttpStatus.OK);
     }
+    @PostMapping("/user")
+    public ResponseEntity<Map<String, Object>> user(@RequestBody  UserInput userInput){
+        UserEntity outputUser = userByLoginUseCase.execute(userInput.login());
 
 
+        response.put("user", outputUser);
+        return ResponseJson.json(response, HttpStatus.OK);
+    }
 
 
 }
