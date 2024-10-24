@@ -33,3 +33,11 @@ test('criar um novo usuário se o login não existir', async () => {
 
 
 });
+
+
+
+test('Listar Todos Usuarios Cadastrados Na Base', async () => {
+    outputUsers = await instance.get(url + "/users")
+     
+    expect(outputUsers.data.users.length).toBeGreaterThan(0);
+});

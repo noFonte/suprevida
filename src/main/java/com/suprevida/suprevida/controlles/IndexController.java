@@ -10,7 +10,7 @@ import java.util.Map;
 @RestController
 public class IndexController extends BaseController {
     @GetMapping({"/","/index"})
-    public ResponseEntity<Map<String, String>> Index(){
+    public ResponseEntity<Map<String, Object>> Index(){
         response.put("api","Suprevida - Versão 1");
         response.put("sobre","Gerencia Cadastro de Produtos.");
         return ResponseJson.json(response, HttpStatus.OK);
