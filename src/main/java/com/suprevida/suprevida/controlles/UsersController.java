@@ -4,6 +4,7 @@ import com.suprevida.suprevida.commons.BaseController;
 import com.suprevida.suprevida.core.ResponseJson;
 import com.suprevida.suprevida.entyties.UserEntity;
 import com.suprevida.suprevida.inputs.UserInput;
+import com.suprevida.suprevida.security.TokenService;
 import com.suprevida.suprevida.useCases.RegisterUseCase;
 import com.suprevida.suprevida.useCases.GetAllUsersUseCase;
 
@@ -11,13 +12,25 @@ import com.suprevida.suprevida.useCases.UserByLoginUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
 @RestController
 public class UsersController extends BaseController {
+
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private TokenService tokenService;
+
     @Autowired
     private RegisterUseCase registerUseCase;
     @Autowired
@@ -44,6 +57,25 @@ public class UsersController extends BaseController {
         response.put("user", outputUser);
         return ResponseJson.json(response, HttpStatus.OK);
     }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> login(@RequestBody UserInput login){
+        Map<String, String> response = new HashMap<>();
+        try {
+            UsernamePasswordAuthenticationToken userToken =  new UsernamePasswordAuthenticationToken(login.login(),login.password());
+            Authentication authenticate = authenticationManager.authenticate(userToken);
+            UserEntity user= (UserEntity) authenticate.getPrincipal();
+            response.put("message", "Login bem-sucedido");
+            response.put("token", tokenService.generateToken(user));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            response.put("message",e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
 
 
 }
